@@ -15,7 +15,7 @@ the Matlab codes in this repository.
 
 
 
-##References
+## References
 [1] Jerry H. Ginsberg, "Advanced engineering dynamics", Cambridge University Press, 1998.
 
 

@@ -251,56 +251,7 @@ elseif sim_num==4
     initial_cond=[Init_x_O;Init_y_O;Init_z_O;Init_psi;Init_theta;Init_phi;Init_d_x_O;Init_d_y_O;Init_d_z_O;Init_d_psi;Init_d_theta;Init_d_phi]; %
     [vect_t,Var,vect_te,Vare,ie]=ode45(@SteadyStateFunction,t_span,initial_cond,opts);
     
-    
-    
-    
-    
-%---------------------------------------------
-%dynamic with velocity-constrained of apex point
-elseif sim_num==5
-    
-    period_y=2.4;
-    omega_y=2*pi/period_y;
-    amplitut_y=0.1;
-    diff_phase_y=-pi/2;
-    save('sim_par','sim_num','period_y','amplitut_y','diff_phase_y');
 
-    fun = @fun_theta; 
-    Init_theta = fzero(fun,150*pi/180,[],0.7);
-    if Init_theta<0
-        Init_theta=2*pi+Init_theta;
-    end
-    Init_psi=asin(-amplitut_y/(-r*cos(Init_theta)+OH*cos(Init_theta)-AH*sin(Init_theta)));
-    Init_phi=0*pi/180;
-    
-    MatR1z=[cos(Init_psi) -sin(Init_psi) 0; sin(Init_psi) cos(Init_psi) 0; 0 0 1;];
-    MatR2y = [cos(Init_theta) 0 sin(Init_theta); 0 1 0; -sin(Init_theta) 0 cos(Init_theta);];
-    Init_r_O=[5;0;0]+MatR1z*MatR2y*[-r;0;0];
-    
-    Init_x_O=Init_r_O(1,1);
-    Init_y_O=Init_r_O(2,1);
-    Init_z_O=Init_r_O(3,1);
-    
- 
-    Init_d_y=amplitut_y*omega_y*cos(omega_y*0+diff_phase_y);   
-    Init_d_phi=0*pi/180;
-    
-    
-    [Mat_a_const,Mat_d_a_const]=fun_Mat_a_const([Init_x_O,Init_y_O,Init_z_O,Init_psi,Init_theta,Init_phi],zeros(1,6));
-
-    depend_vel_var=-inv(Mat_a_const(1:5,1:5))*(Mat_a_const(1:5,6)*Init_d_phi+[0;0;0;Init_d_y;0]);
-    Init_d_x_O=depend_vel_var(1,1);Init_d_y_O=depend_vel_var(2,1);Init_d_z_O=depend_vel_var(3,1);Init_d_psi=depend_vel_var(4,1);Init_d_theta=depend_vel_var(5,1);
-    isterminal = 0;  % Halt integration
-    direction = 0;   % The zero can be approached from either direction
-    save('eventopt','isterminal','direction');
-    opts = odeset('Events',@EventsFcn);
-    t_end=100;
-    t_span=0:t_end/500:t_end;
-    initial_cond=[Init_x_O;Init_y_O;Init_z_O;Init_psi;Init_theta;Init_phi;Init_d_x_O;Init_d_y_O;Init_d_z_O;Init_d_psi;Init_d_theta;Init_d_phi]; %
-
-    
-    [vect_t,Var,vect_te,Vare,ie]=ode45(@SteadyStateFunction,t_span,initial_cond,opts);
-    
     
     
 end

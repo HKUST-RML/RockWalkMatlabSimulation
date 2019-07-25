@@ -96,7 +96,7 @@ sim_num=3;
 %kinematic fixed apex point
 if sim_num==1
     
-    % the initial condition for the case the apex point is fixed in defined here
+    % the initial condition for the case the apex point is fixed is defined here
     % the initial value of the euler angles   
     Init_psi=0*pi/180;
     Init_theta=120*pi/180;
@@ -121,7 +121,7 @@ if sim_num==1
     % the initial rolling angular velucity is defined here
     Init_d_phi=1*pi/6;
     
-    % the adjustment for the event event functions in ode45.
+    % the adjustment for the event functions in ode45.
     %refer to the ode45 help for event function
     isterminal = 0;  % Halt integration
     direction = 0;   % The zero can be approached from either direction
@@ -204,9 +204,8 @@ elseif sim_num==2
     Init_d_phi=(coeff_t_phi*0)*omega_phi*cos(omega_phi*0+diff_phase_phi);
     
     %The initial velocity shoud satisfy the constraint equations
-    %here there is only one free variable and the other 5 variables are
+    %here the euler angles are free variables and the other variables are 
     %computed with respect to the constraints of rolling without slippage
-    %and fixed apex point
     [Mat_a_const,Mat_d_a_const]=fun_Mat_a_const([Init_x_O,Init_y_O,Init_z_O,Init_psi,Init_theta,Init_phi],zeros(6,1));
     depend_vel_var=-inv(Mat_a_const(1:3,1:3))*Mat_a_const(1:3,4:6)*[Init_d_psi;Init_d_theta;Init_d_phi];
     Init_d_x_O=depend_vel_var(1,1);Init_d_y_O=depend_vel_var(2,1);Init_d_z_O=depend_vel_var(3,1);
@@ -298,9 +297,8 @@ elseif sim_num==4
     Init_d_phi=0;%150*pi/180;
     
     %The initial velocity shoud satisfy the constraint equations
-    %here there is only one free variable and the other 5 variables are
+    %here the euler angles are free variables and the other variables are 
     %computed with respect to the constraints of rolling without slippage
-    %and fixed apex point   
     [Mat_a_const,Mat_d_a_const]=fun_Mat_a_const([Init_x_O,Init_y_O,Init_z_O,Init_psi,Init_theta,Init_phi],zeros(1,6));
     
     depend_vel_var=-inv(Mat_a_const(1:3,1:3))*Mat_a_const(1:3,4:6)*[Init_d_psi;Init_d_theta;Init_d_phi];

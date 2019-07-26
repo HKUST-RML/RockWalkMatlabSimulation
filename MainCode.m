@@ -24,7 +24,7 @@ end
 % the length from apex point A to the point C on the rim of the disk
 AC=sqrt(1.5^2+(0.35+0.35)^2);
 
-% the length from apex point A to the point C on the rim of the disk
+% the length from apex point A to the point B on the rim of the disk
 AB=sqrt(1.5^2+(0.35-0.35)^2);
 
 % radius of the base circle
@@ -49,7 +49,7 @@ MatB_local=[-AH,0,-OH;-AH,0,-OH;0,r*cos(45*pi/180),r*sin(45*pi/180);0,r*cos(135*
 % coordinate of the center of mass in the frame attached to the object
 r_CM_O=[0.15;0;-0.29];
 
-%matrix of inertia
+%matrix of moment of inertia
 % Mat_I=[0,-1,0;-1,0,0;0,0,-1]*([0.21,0,0;0,0.2,0.05;0,0.05,0.09]*[0,-1,0;-1,0,0;0,0,-1]');
 Mat_I=zeros(3,3);
 
@@ -129,7 +129,7 @@ if sim_num==1
     save('sim_par','sim_num','Init_d_phi');
     opts = odeset('Events',@EventsFcn);
     
-    %The initial velocity shoud satisfy the constraint equations
+    %The initial velocity shoud satisfy the constraint equations.
     %here there is only one free variable and the other 5 variables are
     %computed with respect to the constraints of rolling without slippage
     %and fixed apex point

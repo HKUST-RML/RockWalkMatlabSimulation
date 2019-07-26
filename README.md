@@ -4,18 +4,18 @@
 
 # Simulation of kinematic/dynamic motion of rocking and walking objects.
 
-This repository contains Matlab codes for simulation of the kinematic and dynamic rocking and walking object locomotion.
+This repository contains Matlab codes for simulation of the kinematic and dynamic of rocking and walking object locomotion.
 Rocking and walking object locomotion is a novel robotic manipulation firstly introduced in [manuscript](http://junseo.people.ust.hk/papers/rnw.pdf).
 This manipulation technique is for transporting objects on the ground in a passive dynamic, nonprehensile manner. 
 The object is manipulated to rock from side to side repeatedly; in the meantime, the force of gravity enables the object to roll along a zigzag path that is eventually heading forward.
-For simultion of this motion, the object is modeled as an oblique circular cone. Considering the circular base of a conic object the mathematical equations governing the kinematic and 
-dynamic of rolling falling disk is utilized for analysis of motion of the object. As such, the mathematical analysis of rolling and falling disk provided in [1] is exploited to write
-the Matlab codes in this repository.
+For simultion of this motion, the object is modeled as an oblique circular cone. Considering the circular base of a conic object, the mathematical equations governing the kinematic
+ and dynamic of rolling falling disk is utilized for analysis of motion of the object. As such, the mathematical analysis of rolling and falling disk provided in [1] is exploited
+ to develop the Matlab codes in this repository.
 
 
 # Running the codes
 
-The repository contains Matlab M-Files for each a brief description is provided as follow.
+The repository contains Matlab M-Files for each a brief description is provided as follows.
 
 ### MainCode.m:
 
@@ -40,9 +40,9 @@ which is called from the file "MainCode.m" by the ode45 Matlab function.
 The system of differential equations governing the kinematic and dynamic of conic object is defined in the file "SteadyStateFunction.m". The inputs of this file is 
 the time span between initial and final time and the initial condition of the simulation. Other necessary parameters for the simulation are retrieved for the data files
  "robot.mat" and "sim_par.mat". The system of differential equations in this file are defined as the first order state space. For the kinematic simulation the dynamic of the
- object is not taken into account and the differential equations are derived according to constraints on the generalized coordinate. These constraints correspond
- to non-holonomic velocity constraints of rolling condition and the constraints correspond to whether the fixed or free apex point. The matrix related to these constraints is
- obtained from the "fun_Mat_a_const.m" which is a function of the generalized coordinate of the object.
+ object is not required to be considered and the differential equations are derived according to constraints on the generalized coordinate. These constraints correspond
+ to non-holonomic velocity constraints of rolling condition and the constraints correspond to whether the fixed or free apex point. The matrix related to these velocity 
+ constraints is obtained from the "fun_Mat_a_const.m" which is a function of the generalized coordinate of the object.
  On the other hand, in dynamic simulation the matrices regarding to the dynamic of the object namely the matrices of inertia, vector of coriolis and vector of gravity are also
  needed which can be obtained from the file "dynamiceqpar.m". The inputs of this file are the general coordinate and velocity.
  

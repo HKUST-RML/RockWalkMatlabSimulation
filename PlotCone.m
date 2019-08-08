@@ -5,7 +5,7 @@ for it_sim=1:size(Var,1)
     
 
     plot3(glob_coor_xyz(:,1),glob_coor_xyz(:,2),glob_coor_xyz(:,3),'k');
-    axis(3*[0 2*AH -AH AH 0 2*AH]);
+    axis(3*[-AH AH -AH AH 0 2*AH]);
     xlabel('x(m)')
     ylabel('y(m)')
     zlabel('z(m)')

@@ -90,14 +90,14 @@ save('robot','AC','AB','r','AH','OH','MatA','MatB_local','r_CM_O','Mat_I','m','g
 % sim_num=3---->> dynamic simulation with fixed apex point
 % sim_num=4---->> dynamic simulation with non-fixed apex point
 
-sim_num=3;
+sim_num=4;
 
 %------------------------------------------------------
 %kinematic fixed apex point
 if sim_num==1
     
     % the initial condition for the case the apex point is fixed is defined here
-    % the initial value of the euler angles   
+    % the initial value of the euler angles
     Init_psi=0*pi/180;
     Init_theta=120*pi/180;
     Init_phi=0*pi/180;
@@ -161,8 +161,8 @@ if sim_num==1
     plot(min(radi)*cos(angspan),min(radi)*sin(angspan),'b');
     
     
-%----------------------------------------------------------
-%kinematic non-fixe apex point
+    %----------------------------------------------------------
+    %kinematic non-fixe apex point
 elseif sim_num==2
     % in this part it is assumed that the apex point is not fixed anymore
     % each of the euler angles are supposed to follow a priodic
@@ -204,7 +204,7 @@ elseif sim_num==2
     Init_d_phi=(coeff_t_phi*0)*omega_phi*cos(omega_phi*0+diff_phase_phi);
     
     %The initial velocity shoud satisfy the constraint equations
-    %here the euler angles are free variables and the other variables are 
+    %here the euler angles are free variables and the other variables are
     %computed with respect to the constraints of rolling without slippage
     [Mat_a_const,Mat_d_a_const]=fun_Mat_a_const([Init_x_O,Init_y_O,Init_z_O,Init_psi,Init_theta,Init_phi],zeros(6,1));
     depend_vel_var=-inv(Mat_a_const(1:3,1:3))*Mat_a_const(1:3,4:6)*[Init_d_psi;Init_d_theta;Init_d_phi];
@@ -222,24 +222,24 @@ elseif sim_num==2
     [vect_t,Var,vect_te,Vare,ie]=ode45(@SteadyStateFunction,t_span,initial_cond,opts);
     
     
-%--------------------------------------------------
-%dynamic fixed apex point
+    %--------------------------------------------------
+    %dynamic fixed apex point
 elseif sim_num==3
     save('sim_par','sim_num');
     
-    % setting the initial conditions    
+    % setting the initial conditions
     Init_psi=0*pi/180;
     Init_theta=120*pi/180;
     Init_phi=30*pi/180;
     
     MatR1z=[cos(Init_psi) -sin(Init_psi) 0; sin(Init_psi) cos(Init_psi) 0; 0 0 1;];
     MatR2y = [cos(Init_theta) 0 sin(Init_theta); 0 1 0; -sin(Init_theta) 0 cos(Init_theta);];
-    Init_r_O=[5;0;0]+MatR1z*MatR2y*[-r;0;0];
+    Init_r_O=[3;0;0]+MatR1z*MatR2y*[-r;0;0];
     
     Init_x_O=Init_r_O(1,1);
     Init_y_O=Init_r_O(2,1);
     Init_z_O=Init_r_O(3,1);
-
+    
     %The initial velocity shoud satisfy the constraint equations
     %here there is only one free variable and the other 5 variables are
     %computed with respect to the constraints of rolling without slippage
@@ -263,8 +263,8 @@ elseif sim_num==3
     
     
     
-%---------------------------------------------
-%dynamic with Euler-Angles-Velocity-constrained
+    %---------------------------------------------
+    %dynamic with Euler-Angles-Velocity-constrained
 elseif sim_num==4
     
     
@@ -278,26 +278,26 @@ elseif sim_num==4
     diff_phase_theta=0;
     save('sim_par','sim_num','period_psi','period_theta','amplitut_psi','amplitut_theta','diff_phase_psi','diff_phase_theta');
     
-     % setting the initial conditions   
+    % setting the initial conditions
     Init_psi=90*pi/180;
     Init_theta=120*pi/180;
     Init_phi=0*pi/180;
     
     MatR1z=[cos(Init_psi) -sin(Init_psi) 0; sin(Init_psi) cos(Init_psi) 0; 0 0 1;];
     MatR2y = [cos(Init_theta) 0 sin(Init_theta); 0 1 0; -sin(Init_theta) 0 cos(Init_theta);];
-    Init_r_O=[0;5;0]+MatR1z*MatR2y*[-r;0;0];
+    Init_r_O=[0;3;0]+MatR1z*MatR2y*[-r;0;0];
     
     Init_x_O=Init_r_O(1,1);
     Init_y_O=Init_r_O(2,1);
     Init_z_O=Init_r_O(3,1);
     
-     % setting the initial velocity of euler angles   
+    % setting the initial velocity of euler angles
     Init_d_psi=amplitut_psi*omega_psi*cos(omega_psi*0+diff_phase_psi);
     Init_d_theta=amplitut_theta*omega_theta*cos(omega_theta*0+diff_phase_theta);
     Init_d_phi=0;%150*pi/180;
     
     %The initial velocity shoud satisfy the constraint equations
-    %here the euler angles are free variables and the other variables are 
+    %here the euler angles are free variables and the other variables are
     %computed with respect to the constraints of rolling without slippage
     [Mat_a_const,Mat_d_a_const]=fun_Mat_a_const([Init_x_O,Init_y_O,Init_z_O,Init_psi,Init_theta,Init_phi],zeros(1,6));
     
@@ -311,7 +311,7 @@ elseif sim_num==4
     t_span=0:t_end/500:t_end;
     initial_cond=[Init_x_O;Init_y_O;Init_z_O;Init_psi;Init_theta;Init_phi;Init_d_x_O;Init_d_y_O;Init_d_z_O;Init_d_psi;Init_d_theta;Init_d_phi]; %
     [vect_t,Var,vect_te,Vare,ie]=ode45(@SteadyStateFunction,t_span,initial_cond,opts);
-        
+    
 end
 
 

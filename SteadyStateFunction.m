@@ -146,7 +146,7 @@ elseif sim_num==4
     vect_d_q(1:6,1)=vect_q(7:12,1);
     vect_d_q(7:12,1)=vect_dd_q_lambda(1:6,1);
     
-
+end
 
 
 

@@ -47,7 +47,7 @@ MatA=[0,2,3;0,-2,3;3,3,0;3,-3,0]';
 MatB_local=[-AH,0,-OH;-AH,0,-OH;0,r*cos(45*pi/180),r*sin(45*pi/180);0,r*cos(135*pi/180),r*sin(135*pi/180)]';
 
 % coordinate of the center of mass in the frame attached to the object
-r_CM_O=[0.15;0;-0.29];
+r_CM_O=[0.15;0;0.29];
 
 %matrix of moment of inertia
 % Mat_I=[0,-1,0;-1,0,0;0,0,-1]*([0.21,0,0;0,0.2,0.05;0,0.05,0.09]*[0,-1,0;-1,0,0;0,0,-1]');
@@ -99,7 +99,7 @@ if sim_num==1
     % the initial condition for the case the apex point is fixed is defined here
     % the initial value of the euler angles
     Init_psi=0*pi/180;
-    Init_theta=120*pi/180;
+    Init_theta=45*pi/180;
     Init_phi=0*pi/180;
     
     %with respect to initial values of the euler angles the initial values
@@ -110,10 +110,12 @@ if sim_num==1
     if alpha_min<0
         alpha_min=alpha_min+pi;
     end
-    min_radi=AB*cos(Init_theta-alpha_min); %for the case of fixed apex point
-    MatR1z=[cos(Init_psi) -sin(Init_psi) 0; sin(Init_psi) cos(Init_psi) 0; 0 0 1;];
+    min_radi=AB*cos(pi-Init_theta-alpha_min); %for the case of fixed apex point
+    
+    MatR1z=[-sin(Init_psi) -cos(Init_psi) 0; cos(Init_psi) -sin(Init_psi) 0; 0 0 1;];
     MatR2y = [cos(Init_theta) 0 sin(Init_theta); 0 1 0; -sin(Init_theta) 0 cos(Init_theta);];
-    Init_r_O=[min_radi;0;0]+MatR1z*MatR2y*[-r;0;0];
+    Init_r_O=[0;-min_radi;0]+MatR1z*MatR2y*[-r;0;0];
+    
     Init_x_O=Init_r_O(1,1);
     Init_y_O=Init_r_O(2,1);
     Init_z_O=Init_r_O(3,1);
@@ -177,20 +179,20 @@ elseif sim_num==2
     coeff_t_phi=max_amplitude_phi/(5*period_phi);
     amplitut_psi=30*pi/180;
     amplitut_theta=0*pi/180;
-    diff_phase_psi=3*pi/2;
+    diff_phase_psi=pi/2;
     diff_phase_theta=0;
     diff_phase_phi=0;
     save('sim_par','sim_num','period_psi','period_theta','period_phi','amplitut_psi','amplitut_theta','max_amplitude_phi','diff_phase_psi','diff_phase_theta','diff_phase_phi');
     
     
     % setting the initial conditions
-    Init_psi=-amplitut_psi;
-    Init_theta=150*pi/180;
+    Init_psi=amplitut_psi;
+    Init_theta=45*pi/180;
     Init_phi=0*pi/180;
     
     MatR1z=[cos(Init_psi) -sin(Init_psi) 0; sin(Init_psi) cos(Init_psi) 0; 0 0 1;];
     MatR2y = [cos(Init_theta) 0 sin(Init_theta); 0 1 0; -sin(Init_theta) 0 cos(Init_theta);];
-    Init_r_O=[5;0;0]+MatR1z*MatR2y*[-r;0;0];
+    Init_r_O=[0;0;0]+MatR1z*MatR2y*[-r;0;0];
     
     Init_x_O=Init_r_O(1,1);
     Init_y_O=Init_r_O(2,1);
@@ -229,12 +231,19 @@ elseif sim_num==3
     
     % setting the initial conditions
     Init_psi=0*pi/180;
-    Init_theta=120*pi/180;
-    Init_phi=30*pi/180;
+    Init_theta=45*pi/180;
+    Init_phi=0*pi/180;
     
-    MatR1z=[cos(Init_psi) -sin(Init_psi) 0; sin(Init_psi) cos(Init_psi) 0; 0 0 1;];
+    
+    alpha_min=atan(AH/(r-OH));
+    if alpha_min<0
+        alpha_min=alpha_min+pi;
+    end
+    min_radi=AB*cos(pi-Init_theta-alpha_min); %for the case of fixed apex point
+    
+    MatR1z=[-sin(Init_psi) -cos(Init_psi) 0; cos(Init_psi) -sin(Init_psi) 0; 0 0 1;];
     MatR2y = [cos(Init_theta) 0 sin(Init_theta); 0 1 0; -sin(Init_theta) 0 cos(Init_theta);];
-    Init_r_O=[3;0;0]+MatR1z*MatR2y*[-r;0;0];
+    Init_r_O=[0;-min_radi;0]+MatR1z*MatR2y*[-r;0;0];
     
     Init_x_O=Init_r_O(1,1);
     Init_y_O=Init_r_O(2,1);
@@ -246,7 +255,7 @@ elseif sim_num==3
     %and fixed apex point
     
     [Mat_a_const,Mat_d_a_const]=fun_Mat_a_const([Init_x_O,Init_y_O,Init_z_O,Init_psi,Init_theta,Init_phi],zeros(1,6));
-    Init_d_phi=0*pi/180;
+    Init_d_phi=180*pi/180;
     depend_vel_var=-inv(Mat_a_const(1:5,1:5))*Mat_a_const(1:5,6)*Init_d_phi;
     Init_d_x_O=depend_vel_var(1,1);Init_d_y_O=depend_vel_var(2,1);Init_d_z_O=depend_vel_var(3,1);Init_d_psi=depend_vel_var(4,1);Init_d_theta=depend_vel_var(5,1);
     isterminal = 0;  % Halt integration
@@ -273,19 +282,19 @@ elseif sim_num==4
     omega_psi=2*pi/period_psi;
     omega_theta=2*pi/period_theta;
     amplitut_psi=10*pi/180;
-    amplitut_theta=5*pi/180;
+    amplitut_theta=0*pi/180;
     diff_phase_psi=0;
     diff_phase_theta=0;
     save('sim_par','sim_num','period_psi','period_theta','amplitut_psi','amplitut_theta','diff_phase_psi','diff_phase_theta');
     
     % setting the initial conditions
-    Init_psi=90*pi/180;
-    Init_theta=120*pi/180;
+    Init_psi=0*pi/180;
+    Init_theta=60*pi/180;
     Init_phi=0*pi/180;
     
-    MatR1z=[cos(Init_psi) -sin(Init_psi) 0; sin(Init_psi) cos(Init_psi) 0; 0 0 1;];
+    MatR1z=[-sin(Init_psi) -cos(Init_psi) 0; cos(Init_psi) -sin(Init_psi) 0; 0 0 1;];
     MatR2y = [cos(Init_theta) 0 sin(Init_theta); 0 1 0; -sin(Init_theta) 0 cos(Init_theta);];
-    Init_r_O=[0;3;0]+MatR1z*MatR2y*[-r;0;0];
+    Init_r_O=[0;0;0]+MatR1z*MatR2y*[-r;0;0];
     
     Init_x_O=Init_r_O(1,1);
     Init_y_O=Init_r_O(2,1);
@@ -307,7 +316,7 @@ elseif sim_num==4
     direction = 0;   % The zero can be approached from either direction
     save('eventopt','isterminal','direction');
     opts = odeset('Events',@EventsFcn);
-    t_end=20;
+    t_end=5;
     t_span=0:t_end/500:t_end;
     initial_cond=[Init_x_O;Init_y_O;Init_z_O;Init_psi;Init_theta;Init_phi;Init_d_x_O;Init_d_y_O;Init_d_z_O;Init_d_psi;Init_d_theta;Init_d_phi]; %
     [vect_t,Var,vect_te,Vare,ie]=ode45(@SteadyStateFunction,t_span,initial_cond,opts);

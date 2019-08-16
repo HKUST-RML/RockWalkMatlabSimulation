@@ -90,7 +90,7 @@ save('robot','AC','AB','r','AH','OH','MatA','MatB_local','r_CM_O','Mat_I','m','g
 % sim_num=3---->> dynamic simulation with fixed apex point
 % sim_num=4---->> dynamic simulation with non-fixed apex point
 
-sim_num=4;
+sim_num=3;
 
 %------------------------------------------------------
 %kinematic fixed apex point
@@ -232,7 +232,7 @@ elseif sim_num==3
     % setting the initial conditions
     Init_psi=0*pi/180;
     Init_theta=45*pi/180;
-    Init_phi=0*pi/180;
+    Init_phi=45*pi/180;
     
     
     alpha_min=atan(AH/(r-OH));
@@ -244,6 +244,7 @@ elseif sim_num==3
     MatR1z=[-sin(Init_psi) -cos(Init_psi) 0; cos(Init_psi) -sin(Init_psi) 0; 0 0 1;];
     MatR2y = [cos(Init_theta) 0 sin(Init_theta); 0 1 0; -sin(Init_theta) 0 cos(Init_theta);];
     Init_r_O=[0;-min_radi;0]+MatR1z*MatR2y*[-r;0;0];
+    Init_r_O(2)=0;
     
     Init_x_O=Init_r_O(1,1);
     Init_y_O=Init_r_O(2,1);
@@ -255,7 +256,7 @@ elseif sim_num==3
     %and fixed apex point
     
     [Mat_a_const,Mat_d_a_const]=fun_Mat_a_const([Init_x_O,Init_y_O,Init_z_O,Init_psi,Init_theta,Init_phi],zeros(1,6));
-    Init_d_phi=180*pi/180;
+    Init_d_phi=0*pi/180;
     depend_vel_var=-inv(Mat_a_const(1:5,1:5))*Mat_a_const(1:5,6)*Init_d_phi;
     Init_d_x_O=depend_vel_var(1,1);Init_d_y_O=depend_vel_var(2,1);Init_d_z_O=depend_vel_var(3,1);Init_d_psi=depend_vel_var(4,1);Init_d_theta=depend_vel_var(5,1);
     isterminal = 0;  % Halt integration
@@ -369,10 +370,6 @@ axis([0 20 -1.5 3])
 % ylabel('rad')
 % legend('\psi','\theta','\phi')
 
-figure
-plot(glob_coor_xyz(1:175,1),glob_coor_xyz(1:175,2),'b');
-hold on
-plot(glob_coor_xyz(176:349,1),glob_coor_xyz(176:349,2),'r');
 
 
 
@@ -384,10 +381,13 @@ mat_frame=PlotCone(Var,glob_coor_xyz);
 
 
 v_cone = VideoWriter('TrajZigzagCone.avi');
+v_cone.FrameRate=round(length(vect_t)/vect_t(end,1));
 open(v_cone);
 writeVideo(v_cone,mat_frame);
 close(v_cone);
-movie(mat_frame,1,20)
+% movie(mat_frame,1,round(length(vect_t)/vect_t(end,1)))
+
+
 
 
 
